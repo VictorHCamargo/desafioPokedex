@@ -45,7 +45,17 @@ npm install
 
 Instala os pacotes front-end definidos no `package.json`, incluindo Tailwind CSS, Alpine.js e Vite.
 
-### 3. Gerar a chave da aplicação
+### 3. Configurar o arquivo de ambiente
+
+O Laravel utiliza um arquivo .env para armazenar as configurações do ambiente local, como credenciais de banco de dados, chaves de API e outras variáveis sensíveis. O repositório inclui um .env.example com todos os campos necessários — basta copiá-lo para criar o seu próprio:
+
+```bash
+cp .env.example .env
+```
+
+Após copiar, abra o arquivo .env e ajuste as variáveis conforme o seu ambiente, especialmente as configurações de banco de dados (DB_*) e a URL da aplicação (APP_URL).
+
+### 4. Gerar a chave da aplicação
 
 ```bash
 php artisan key:generate
@@ -53,7 +63,7 @@ php artisan key:generate
 
 Gera uma chave de criptografia única para a aplicação e a salva no arquivo `.env`. Necessário para o funcionamento de sessões e cookies.
 
-### 4. Executar as migrations
+### 5. Executar as migrations
 
 ```bash
 php artisan migrate
@@ -61,7 +71,7 @@ php artisan migrate
 
 Cria as tabelas no banco de dados conforme definido nos arquivos de migration, incluindo a tabela `pokemons` e `sessions`.
 
-### 5. Popular o banco com os dados iniciais
+### 6. Popular o banco com os dados iniciais
 
 ```bash
 php artisan db:seed
@@ -69,7 +79,7 @@ php artisan db:seed
 
 Insere os três Pokémons padrão da Pokédex (Prudence, Caution e Scare) no banco de dados com suas imagens, tipos e status predefinidos.
 
-### 6. Compilar os assets (opcional para desenvolvimento)
+### 7. Compilar os assets (opcional para desenvolvimento)
 
 ```bash
 npm run dev
@@ -77,7 +87,7 @@ npm run dev
 
 Inicia o servidor Vite para hot-reload em desenvolvimento. Para produção, use `npm run build`.
 
-### 7. Iniciar o servidor
+### 8. Iniciar o servidor
 
 ```bash
 php artisan serve
