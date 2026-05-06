@@ -13,10 +13,12 @@ class Pokemon extends Model
         'status',
         'types',
         'image_url',
+        'seeded',
     ];
     
     protected $casts = [
         'status' => 'array',
         'types' => 'array',
+        'seeded' => 'boolean',
     ];
 }

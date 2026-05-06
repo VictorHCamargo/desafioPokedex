@@ -40,7 +40,7 @@ $statColor = fn($v) => $v >= 150 ? 'bg-blue-500' : ($v >= 110 ? 'bg-green-500' :
             <div>
                 <h1 class="pixel text-red-500 text-sm sm:text-base leading-tight tracking-wide">POKÉDEX</h1>
                 <p class="text-slate-500 text-sm font-medium mt-0.5">
-                    {{ $pokemons->count() }} {{ $pokemons->count() === 1 ? 'Pokémon registrado' : 'Pokémon registrados' }}
+                    {{ $pokemons->count() + $seededPokemons->count() }} {{ ($pokemons->count() + $seededPokemons->count()) === 1 ? 'Pokémon registrado' : 'Pokémon registrados' }}
                 </p>
             </div>
         </div>
@@ -68,89 +68,170 @@ $statColor = fn($v) => $v >= 150 ? 'bg-blue-500' : ($v >= 110 ? 'bg-green-500' :
 </div>
 @endif
 
-<main class="max-w-7xl mx-auto px-6 py-8">
+<main class="max-w-7xl mx-auto px-6 py-8 space-y-12">
 
-@if($pokemons->isEmpty())
-    <div class="flex flex-col items-center justify-center py-40 gap-6 text-center">
-        <svg class="w-24 h-24 text-slate-700 opacity-60" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="50" cy="50" r="47" fill="currentColor" opacity=".3"/>
-            <path d="M3 50 A47 47 0 0 1 97 50 Z" fill="currentColor" opacity=".6"/>
-            <circle cx="50" cy="50" r="13" fill="#0f172a" stroke="currentColor" stroke-width="3"/>
-            <circle cx="50" cy="50" r="7" fill="currentColor"/>
-        </svg>
-        <p class="pixel text-slate-600 text-xs leading-relaxed">Nenhum Pokémon<br>encontrado ainda.</p>
-        <a href="{{ route('pokemon.create') }}" class="text-red-500 hover:text-red-400 underline underline-offset-4 font-semibold transition">Cadastrar o primeiro →</a>
-    </div>
-@else
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5">
-        @foreach($pokemons as $pokemon)
-        @php
-            $types = is_array($pokemon->types) ? $pokemon->types : (json_decode($pokemon->types, true) ?? []);
-            $status = is_array($pokemon->status) ? $pokemon->status : (json_decode($pokemon->status, true) ?? []);
-            $firstType = $types[0] ?? 'normal';
-            $tColor = $typeColors[$firstType] ?? $typeColors['normal'];
-            $hp = $status['hp'] ?? 0;
-        @endphp
-        <div class="card-hover bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden flex flex-col">
-            <div class="h-1.5 {{ $tColor['bg'] }}"></div>
-
-            <div class="bg-slate-800/60 relative flex items-center justify-center h-44 p-4 overflow-hidden">
-                <span class="absolute top-2.5 left-3 pixel text-slate-600 text-[8px]">#{{ str_pad($pokemon->id, 3, '0', STR_PAD_LEFT) }}</span>
-                <div class="absolute inset-0 flex items-center justify-center opacity-5">
-                    <svg viewBox="0 0 100 100" class="w-40 h-40"><circle cx="50" cy="50" r="47" fill="white"/><path d="M3 50 A47 47 0 0 1 97 50 Z" fill="white"/><circle cx="50" cy="50" r="13" fill="#0f172a" stroke="white" stroke-width="3"/></svg>
-                </div>
-                @if($pokemon->image_url)
-                    <img src="{{ asset($pokemon->image_url) }}" alt="{{ $pokemon->name }}"
-                         class="h-36 w-auto object-contain drop-shadow-xl z-10 group-hover:scale-110 transition-transform duration-300">
-                @else
-                    <span class="text-slate-600 text-5xl z-10">?</span>
-                @endif
-            </div>
-
-            <div class="p-4 flex flex-col flex-1 gap-3">
-                <h3 class="font-bold text-white text-lg capitalize leading-tight">{{ $pokemon->name }}</h3>
-
-                <div class="flex flex-wrap gap-1">
-                    @foreach($types as $type)
-                    @php $tc = $typeColors[$type] ?? $typeColors['normal']; @endphp
-                    <span class="px-2.5 py-0.5 rounded-full text-xs font-bold capitalize {{ $tc['bg'] }} {{ $tc['text'] }}">{{ $type }}</span>
-                    @endforeach
-                </div>
-
-                <div>
-                    <div class="flex justify-between text-xs mb-1">
-                        <span class="text-slate-500 font-semibold">HP</span>
-                        <span class="text-slate-400 font-bold">{{ $hp }}</span>
-                    </div>
-                    <div class="h-1.5 bg-slate-700 rounded-full overflow-hidden">
-                        <div class="stat-bar h-full rounded-full {{ $statColor($hp) }}" @style="width: {{ min(($hp/255)*100, 100) }}%"></div>
-                    </div>
-                </div>
-
-                <div class="flex gap-2 mt-auto pt-1">
-                    <a href="{{ route('pokemon.view', $pokemon->id) }}"
-                       class="flex-1 text-center py-2 text-xs font-bold rounded-lg bg-blue-600/15 text-blue-400 border border-blue-600/20 hover:bg-blue-600/30 transition">
-                        Ver
-                    </a>
-                    <a href="{{ route('pokemon.edit', $pokemon->id) }}"
-                       class="flex-1 text-center py-2 text-xs font-bold rounded-lg bg-amber-500/15 text-amber-400 border border-amber-500/20 hover:bg-amber-500/30 transition">
-                        Editar
-                    </a>
-                    <form action="{{ route('pokemon.destroy', $pokemon->id) }}" method="POST"
-                          onsubmit="return confirm('Remover {{ addslashes($pokemon->name) }}?')">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit"
-                                class="py-2 px-3 text-xs font-bold rounded-lg bg-red-600/15 text-red-400 border border-red-600/20 hover:bg-red-600/30 transition">
-                            ✕
-                        </button>
-                    </form>
-                </div>
-            </div>
+    @if($seededPokemons->isNotEmpty())
+    <section>
+        <div class="flex items-center gap-3 mb-5">
+            <span class="pixel text-yellow-400 text-xs tracking-widest">★ POKÉMONS INICIAIS</span>
+            <div class="flex-1 h-px bg-yellow-900/50"></div>
+            <span class="text-xs text-slate-600 font-semibold">Criados para demonstração</span>
         </div>
-        @endforeach
-    </div>
-@endif
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
+            @foreach($seededPokemons as $pokemon)
+            @php
+                $types    = is_array($pokemon->types)  ? $pokemon->types  : (json_decode($pokemon->types,  true) ?? []);
+                $status   = is_array($pokemon->status) ? $pokemon->status : (json_decode($pokemon->status, true) ?? []);
+                $firstType = $types[0] ?? 'normal';
+                $tColor    = $typeColors[$firstType] ?? $typeColors['normal'];
+                $hp        = $status['hp'] ?? 0;
+            @endphp
+            <div class="card-hover bg-slate-900 border border-yellow-900/40 rounded-2xl overflow-hidden flex flex-col ring-1 ring-yellow-700/20">
+                <div class="h-1.5 {{ $tColor['bg'] }}"></div>
+
+                <div class="bg-slate-800/60 relative flex items-center justify-center h-44 p-4 overflow-hidden">
+                    <span class="absolute top-2.5 left-3 pixel text-slate-600 text-[8px]">#{{ str_pad($pokemon->id, 3, '0', STR_PAD_LEFT) }}</span>
+                    <span class="absolute top-2.5 right-3 pixel text-yellow-500 text-[8px] bg-yellow-900/30 px-2 py-0.5 rounded-full border border-yellow-800/40">INICIAL</span>
+                    <div class="absolute inset-0 flex items-center justify-center opacity-5">
+                        <svg viewBox="0 0 100 100" class="w-40 h-40"><circle cx="50" cy="50" r="47" fill="white"/><path d="M3 50 A47 47 0 0 1 97 50 Z" fill="white"/><circle cx="50" cy="50" r="13" fill="#0f172a" stroke="white" stroke-width="3"/></svg>
+                    </div>
+                    @if($pokemon->image_url)
+                        <img src="{{ asset($pokemon->image_url) }}" alt="{{ $pokemon->name }}"
+                             class="h-36 w-auto object-contain drop-shadow-xl z-10 transition-transform duration-300 hover:scale-110">
+                    @else
+                        <span class="text-slate-600 text-5xl z-10">?</span>
+                    @endif
+                </div>
+
+                <div class="p-4 flex flex-col flex-1 gap-3">
+                    <h3 class="font-bold text-white text-lg capitalize leading-tight">{{ $pokemon->name }}</h3>
+
+                    <div class="flex flex-wrap gap-1">
+                        @foreach($types as $type)
+                        @php $tc = $typeColors[$type] ?? $typeColors['normal']; @endphp
+                        <span class="px-2.5 py-0.5 rounded-full text-xs font-bold capitalize {{ $tc['bg'] }} {{ $tc['text'] }}">{{ $type }}</span>
+                        @endforeach
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between text-xs mb-1">
+                            <span class="text-slate-500 font-semibold">HP</span>
+                            <span class="text-slate-400 font-bold">{{ $hp }}</span>
+                        </div>
+                        <div class="h-1.5 bg-slate-700 rounded-full overflow-hidden">
+                            <div class="stat-bar h-full rounded-full {{ $statColor($hp) }}" @style("width: " . min(($hp/255)*100, 100) . "%")></div>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-2 mt-auto pt-1">
+                        <a href="{{ route('pokemon.view', $pokemon->id) }}"
+                           class="flex-1 text-center py-2 text-xs font-bold rounded-lg bg-blue-600/15 text-blue-400 border border-blue-600/20 hover:bg-blue-600/30 transition">
+                            Ver
+                        </a>
+                        <!-- <a href="{{ route('pokemon.edit', $pokemon->id) }}"
+                           class="flex-1 text-center py-2 text-xs font-bold rounded-lg bg-amber-500/15 text-amber-400 border border-amber-500/20 hover:bg-amber-500/30 transition">
+                            Editar
+                        </a> -->
+
+                    </div>
+                </div>
+            </div>
+            @endforeach
+        </div>
+    </section>
+    @endif
+
+    <section>
+        @if($seededPokemons->isNotEmpty())
+        <div class="flex items-center gap-3 mb-5">
+            <span class="pixel text-slate-400 text-xs tracking-widest">CADASTRADOS</span>
+            <div class="flex-1 h-px bg-slate-800"></div>
+        </div>
+        @endif
+
+        @if($pokemons->isEmpty())
+            <div class="flex flex-col items-center justify-center py-24 gap-6 text-center">
+                <svg class="w-24 h-24 text-slate-700 opacity-60" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="50" cy="50" r="47" fill="currentColor" opacity=".3"/>
+                    <path d="M3 50 A47 47 0 0 1 97 50 Z" fill="currentColor" opacity=".6"/>
+                    <circle cx="50" cy="50" r="13" fill="#0f172a" stroke="currentColor" stroke-width="3"/>
+                    <circle cx="50" cy="50" r="7" fill="currentColor"/>
+                </svg>
+                <p class="pixel text-slate-600 text-xs leading-relaxed">Nenhum Pokémon<br>cadastrado ainda.</p>
+                <a href="{{ route('pokemon.create') }}" class="text-red-500 hover:text-red-400 underline underline-offset-4 font-semibold transition">Cadastrar o primeiro →</a>
+            </div>
+        @else
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5">
+                @foreach($pokemons as $pokemon)
+                @php
+                    $types     = is_array($pokemon->types)  ? $pokemon->types  : (json_decode($pokemon->types,  true) ?? []);
+                    $status    = is_array($pokemon->status) ? $pokemon->status : (json_decode($pokemon->status, true) ?? []);
+                    $firstType = $types[0] ?? 'normal';
+                    $tColor    = $typeColors[$firstType] ?? $typeColors['normal'];
+                    $hp        = $status['hp'] ?? 0;
+                @endphp
+                <div class="card-hover bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden flex flex-col">
+                    <div class="h-1.5 {{ $tColor['bg'] }}"></div>
+
+                    <div class="bg-slate-800/60 relative flex items-center justify-center h-44 p-4 overflow-hidden">
+                        <span class="absolute top-2.5 left-3 pixel text-slate-600 text-[8px]">#{{ str_pad($pokemon->id, 3, '0', STR_PAD_LEFT) }}</span>
+                        <div class="absolute inset-0 flex items-center justify-center opacity-5">
+                            <svg viewBox="0 0 100 100" class="w-40 h-40"><circle cx="50" cy="50" r="47" fill="white"/><path d="M3 50 A47 47 0 0 1 97 50 Z" fill="white"/><circle cx="50" cy="50" r="13" fill="#0f172a" stroke="white" stroke-width="3"/></svg>
+                        </div>
+                        @if($pokemon->image_url)
+                            <img src="{{ asset($pokemon->image_url) }}" alt="{{ $pokemon->name }}"
+                                 class="h-36 w-auto object-contain drop-shadow-xl z-10 transition-transform duration-300 hover:scale-110">
+                        @else
+                            <span class="text-slate-600 text-5xl z-10">?</span>
+                        @endif
+                    </div>
+
+                    <div class="p-4 flex flex-col flex-1 gap-3">
+                        <h3 class="font-bold text-white text-lg capitalize leading-tight">{{ $pokemon->name }}</h3>
+
+                        <div class="flex flex-wrap gap-1">
+                            @foreach($types as $type)
+                            @php $tc = $typeColors[$type] ?? $typeColors['normal']; @endphp
+                            <span class="px-2.5 py-0.5 rounded-full text-xs font-bold capitalize {{ $tc['bg'] }} {{ $tc['text'] }}">{{ $type }}</span>
+                            @endforeach
+                        </div>
+
+                        <div>
+                            <div class="flex justify-between text-xs mb-1">
+                                <span class="text-slate-500 font-semibold">HP</span>
+                                <span class="text-slate-400 font-bold">{{ $hp }}</span>
+                            </div>
+                            <div class="h-1.5 bg-slate-700 rounded-full overflow-hidden">
+                                <div class="stat-bar h-full rounded-full {{ $statColor($hp) }}" @style("width: " . min(($hp/255)*100, 100) . "%")></div>
+                            </div>
+                        </div>
+
+                        <div class="flex gap-2 mt-auto pt-1">
+                            <a href="{{ route('pokemon.view', $pokemon->id) }}"
+                               class="flex-1 text-center py-2 text-xs font-bold rounded-lg bg-blue-600/15 text-blue-400 border border-blue-600/20 hover:bg-blue-600/30 transition">
+                                Ver
+                            </a>
+                            <a href="{{ route('pokemon.edit', $pokemon->id) }}"
+                               class="flex-1 text-center py-2 text-xs font-bold rounded-lg bg-amber-500/15 text-amber-400 border border-amber-500/20 hover:bg-amber-500/30 transition">
+                                Editar
+                            </a>
+                            <form action="{{ route('pokemon.destroy', $pokemon->id) }}" method="POST"
+                                  onsubmit="return confirm('Remover {{ addslashes($pokemon->name) }}?')">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit"
+                                        class="py-2 px-3 text-xs font-bold rounded-lg bg-red-600/15 text-red-400 border border-red-600/20 hover:bg-red-600/30 transition">
+                                    ✕
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+        @endif
+    </section>
 
 </main>
 </x-layouts.pokedex>

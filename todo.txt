@@ -1,5 +1,5 @@
-Fazer uma forma para pegar informações da Api de Pokemons ja existe!
-* adicionar um sistema de batalha!
-* fazer um campo de filtragem por tipo e nome dos Pokemons!
+Fazer uma forma para pegar informações da Api de Pokemons ja existe! (v)
+* fazer um campo de filtragem por tipo e nome dos Pokemons! (+/-)
+Adicionar um favicon!!!
 
-Realizar a documentação do Projeto
+Realizar a documentação do Projeto 

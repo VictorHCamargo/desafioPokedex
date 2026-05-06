@@ -17,6 +17,7 @@ return new class extends Migration
             $table->json('status'); 
             $table->json('types'); 
             $table->string('image_url')->nullable();
+            $table->boolean('seeded')->default(false);
             $table->timestamps();
         });
     }

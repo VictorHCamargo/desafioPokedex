@@ -43,16 +43,39 @@
         </div>
 
         <div class="mb-8">
-            <label class="block text-slate-400 text-xs font-bold mb-3 uppercase tracking-wider">Tipos</label>
+            <label class="block text-slate-400 text-xs font-bold mb-3 uppercase tracking-wider">
+                Tipos (Selecione 1 ou 2)
+            </label>
+            
             <div class="grid grid-cols-3 sm:grid-cols-6 gap-3">
                 @foreach($availableTypes as $type)
-                <label class="flex items-center gap-2 bg-slate-800 border border-slate-700 px-3 py-2 rounded-lg cursor-pointer hover:border-slate-500 transition">
-                    <input type="checkbox" name="types[]" value="{{ $type }}" class="text-amber-500 bg-slate-900 border-slate-700 rounded focus:ring-amber-500 focus:ring-offset-slate-800"
-                           {{ in_array($type, old('types', $currentTypes)) ? 'checked' : '' }}>
-                    <span class="text-sm text-slate-300 capitalize font-medium">{{ $type }}</span>
-                </label>
+                    @php
+                        $isChecked = is_array(old('types')) && in_array($type, old('types'));
+
+                        $errorClasses = ($isChecked && $errors->has('types')) 
+                            ? 'border-red-500 ring-1 ring-red-500' 
+                            : 'border-slate-700';
+                    @endphp
+
+                    <label class="flex items-center gap-2 bg-slate-800 border {{ $errorClasses }} px-3 py-2
+                                rounded-lg cursor-pointer hover:border-slate-500 transition">
+                        <input
+                            type="checkbox" name="types[]" value="{{ $type }}"
+                            class="text-red-500 bg-slate-900 border-slate-700 rounded focus:ring-red-500"
+                            {{ $isChecked ? 'checked' : '' }}
+                        >
+                        <span class="text-sm text-slate-300 capitalize">{{ $type }}</span>
+                    </label>
                 @endforeach
             </div>
+
+            @error('types') 
+                <div class="w-full mt-3 px-4 py-2 bg-red-500/10 border border-red-500/50 rounded-lg">
+                    <span class="text-red-500 text-xs md:text-sm block font-bold tracking-wide italic">
+                        ⚠ {{ $message }}
+                    </span>
+                </div>
+            @enderror
         </div>
 
         <div class="mb-8">
