@@ -278,7 +278,8 @@ Os três Pokémons a seguir foram criados exclusivamente para este projeto e sã
 
 ![Prudence](./projeto/public/img/pokemons_fixos/1778009488.png)
 
-Pokémon dos tipos **Psychic** e **Ghost**. De aparência sutil e misteriosa, Prudence é um Pokémon voltado para a resistência e o suporte, com alta defesa especial e poder especial considerável, mas físico muito fraco. Ideal para batalhas de longa duração onde a estratégia prevalece sobre a força bruta.
+Prudence é um Pokémon pequeno e frágil do tipo **Psychic** e **Ghost**. Representa a primeira fase do medo: a prudência. Seu corpo é delicado, quase etéreo, com olhos grandes e atentos que nunca piscam. Ele é extremamente cauteloso, sempre se escondendo ou fugindo antes mesmo do perigo aparecer.
+Apesar de ser fisicamente fraco, sua habilidade especial “Pressentimento” permite que ele preveja ataques com antecedência, tornando-o difícil de acertar. No lore, Prudence é visto como um espírito protetor que ensina os jovens a terem cuidado com o mundo perigoso. Evolui para Caution quando o treinador o expõe a situações de alto risco, forçando-o a transformar o medo em algo mais afiado.
 
 | Status           | Valor |
 |------------------|-------|
@@ -295,7 +296,8 @@ Pokémon dos tipos **Psychic** e **Ghost**. De aparência sutil e misteriosa, Pr
 
 ![Caution](./projeto/public/img/pokemons_fixos/1778009229.png)
 
-Pokémon dos tipos **Ghost** e **Dark**. Caution representa o estágio intermediário da linha evolutiva, com atributos equilibrados e velocidade elevada. Possui alto poder especial e boa defesa especial, sendo um Pokémon versátil que transita entre o ataque e a resistência.
+Caution é a forma intermediária, do tipo  **Ghost** e **Dark**. Aqui o medo já não é mais apenas fuga ele se torna atenção mortal. Seu corpo é mais alongado e ágil, com garras afiadas e um manto de sombras que distorce a percepção de quem olha para ele.
+É significativamente mais forte que Prudence, com movimentos rápidos e precisos. Sua habilidade “Medo Calculado” aumenta seu poder conforme o oponente demonstra força, transformando o pavor alheio em combustível. Caution é conhecido por paralisar inimigos com um simples olhar, fazendo-os hesitarem no momento crítico. Ele representa o medo que torna o ser vivo mais perigoso e consciente.
 
 | Status           | Valor |
 |------------------|-------|
@@ -312,7 +314,9 @@ Pokémon dos tipos **Ghost** e **Dark**. Caution representa o estágio intermedi
 
 ![Scare](./projeto/public/img/pokemons_fixos/1778009877.png)
 
-Pokémon dos tipos **Ghost** e **Dark**. Scare é a forma final e mais poderosa da linha evolutiva, com estatísticas imponentes em todos os atributos. Seu ataque especial e velocidade elevados fazem dele um Pokémon ofensivo devastador, capaz de dominar batalhas com rapidez e poder.
+Scare é a evolução final, classificado como Pokémon Lendário (pseudo-lendário) do tipo  **Ghost** e **Dark**. Ele é literalmente chamado de “Deus do Medo” em algumas regiões antigas. Sua aparência é imponente e aterrorizante: uma figura alta e encapuzada, com olhos que brilham como abismos e uma presença que faz o ar ficar mais pesado.
+Diz a lenda que quando Scare aparece, até Pokémon lendários sentem um calafrio. Sua habilidade “Terror Absoluto” pode induzir pânico incontrolável em qualquer criatura, independentemente do nível. Ele não precisa atacar fisicamente — o simples fato de sua existência já quebra a vontade dos oponentes.
+Scare representa o medo em sua forma mais pura e divina: não só o instinto de sobrevivência, mas o pavor existencial que paralisa ou transforma tudo ao seu redor.
 
 | Status           | Valor |
 |------------------|-------|
@@ -323,7 +327,38 @@ Pokémon dos tipos **Ghost** e **Dark**. Scare é a forma final e mais poderosa 
 | Ataque Especial  | 135   |
 | Defesa Especial  | 95    |
 
+
+## A Linha do Medo
+
+Três estágios. Uma essência. O medo que evolui junto com aquele que o carrega.
+
 ---
+
+### 🌑 Prudence — *O Primeiro Medo*
+
+> *"Aquele que hesita ainda tem algo a perder."*
+
+Prudence é o medo em sua forma mais primitiva o instinto que sussurra para recuar antes mesmo do perigo aparecer. Frágil por fora, mas dotado de uma percepção que poucos compreendem. Não é fraqueza. É sabedoria nascendo.
+
+---
+
+### 🌒 Caution — *O Medo que Endurece*
+
+> *"Entre fugir e lutar, há um instante. Caution vive nesse instante."*
+
+Quando o medo encontra resistência, ele se transforma. Caution carrega as cicatrizes de quem já quis correr, mas ficou. Mais rápido, mais calculista, mais perigoso — não porque perdeu o medo, mas porque aprendeu a usá-lo como arma.
+
+---
+
+### 🌕 Scare — *O Medo Absoluto*
+
+> *"Você não luta contra Scare. Você se rende a ele."*
+
+Na sua forma final, o medo não precisa mais se esconder. Scare é a manifestação plena do terror aquele que não paralisa pelo grito, mas pelo silêncio que vem antes dele. Olhar nos seus olhos é entender, de uma vez por todas, que alguns medos nunca passam. Eles apenas crescem.
+
+---
+
+*Do sussurro ao abismo — Prudence, Caution, Scare.*
 
 ## 🛠 Ferramentas Utilizadas
 
