@@ -174,6 +174,71 @@ projeto/
 ├── composer.json                           # Dependências PHP
 └── package.json                            # Dependências JavaScript
 ```
+---
+## 🗄️ Banco de Dados
+ 
+O projeto utiliza **SQLite** por padrão no ambiente de desenvolvimento, com as tabelas criadas e gerenciadas via migrations do Laravel. Abaixo está a documentação de cada tabela gerada.
+ 
+---
+ 
+### Tabela `pokemons`
+ 
+Armazena todos os Pokémons da Pokédex, tanto os inseridos via seed quanto os criados pelo usuário.
+ 
+**Migration:** `2026_05_05_165512_create_pokemon_table.php`
+ 
+| Coluna       | Tipo        | Nullable | Padrão  | Descrição                                                                                                     |
+|--------------|-------------|----------|---------|---------------------------------------------------------------------------------------------------------------|
+| `id`         | `bigint`    | não      | auto    | Chave primária autoincrementada                                                                               |
+| `name`       | `string`    | não      | —       | Nome do Pokémon. Deve ser único na tabela                                                                     |
+| `status`     | `json`      | não      | —       | Objeto com os atributos de batalha: `hp`, `attack`, `defense`, `speed`, `special_attack`, `special_defense`   |
+| `types`      | `json`      | não      | —       | Array com os tipos do Pokémon (mínimo 1, máximo 2). Ex: `["ghost", "dark"]`                                   |
+| `image_url`  | `string`    | sim      | `null`  | Caminho relativo da imagem a partir de `public/`. Ex: `img/pokemons/arquivo.png`                              |
+| `seeded`     | `boolean`   | não      | `false` | Indica se o Pokémon foi inserido via seed (`true`) ou criado pelo usuário (`false`)                           |
+| `created_at` | `timestamp` | sim      | —       | Preenchido automaticamente pelo Laravel                                                                       |
+| `updated_at` | `timestamp` | sim      | —       | Atualizado automaticamente pelo Laravel                                                                       |
+ 
+**Exemplo de registro:**
+ 
+```json
+{
+  "id": 1,
+  "name": "Scare",
+  "status": {
+    "hp": "90",
+    "speed": "110",
+    "attack": "80",
+    "defense": "90",
+    "special_attack": "135",
+    "special_defense": "95"
+  },
+  "types": ["ghost", "dark"],
+  "image_url": "img/pokemons_fixos/1778009877.png",
+  "seeded": true,
+  "created_at": "2026-05-05T19:00:00.000000Z",
+  "updated_at": "2026-05-05T19:00:00.000000Z"
+}
+```
+ 
+---
+ 
+### Tabela `sessions`
+ 
+Tabela nativa do Laravel responsável por persistir as sessões dos usuários no banco de dados. É utilizada quando o driver de sessão está configurado como `database` no `.env`.
+ 
+**Migration:** `2026_05_05_180909_create_sessions_table.php`
+ 
+| Coluna          | Tipo       | Nullable | Descrição                                                                                    |
+|-----------------|------------|----------|----------------------------------------------------------------------------------------------|
+| `id`            | `string`   | não      | Chave primária da sessão (identificador único gerado pelo Laravel)                           |
+| `user_id`       | `bigint`   | sim      | ID do usuário autenticado. `null` para sessões de visitantes                                 |
+| `ip_address`    | `string`   | sim      | Endereço IP do cliente (suporta IPv4 e IPv6, até 45 caracteres)                              |
+| `user_agent`    | `text`     | sim      | Cabeçalho User-Agent do navegador do cliente                                                 |
+| `payload`       | `longtext` | não      | Dados serializados da sessão                                                                 |
+| `last_activity` | `integer`  | não      | Timestamp Unix da última atividade. Indexado para facilitar a limpeza de sessões expiradas   |
+ 
+> A tabela `sessions` não possui `timestamps` convencionais do Laravel — o controle de tempo é feito exclusivamente pela coluna `last_activity`.
+ 
 
 ---
 
