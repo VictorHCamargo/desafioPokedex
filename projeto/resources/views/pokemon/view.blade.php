@@ -36,13 +36,16 @@
         <a href="{{ route('pokedex') }}" class="flex items-center gap-2 text-slate-400 hover:text-white transition font-bold text-sm bg-slate-900 px-4 py-2 rounded-lg border border-slate-800">
             ← Voltar
         </a>
-        <div class="flex gap-3">
-            <a href="{{ route('pokemon.edit', $pokemon->id) }}" class="bg-amber-500/20 text-amber-400 hover:bg-amber-500/40 px-4 py-2 rounded-lg font-bold text-sm transition">Editar</a>
-            <form action="{{ route('pokemon.destroy', $pokemon->id) }}" method="POST" onsubmit="return confirm('Tem certeza que deseja remover este Pokémon?')">
-                @csrf @method('DELETE')
-                <button type="submit" class="bg-red-500/20 text-red-400 hover:bg-red-500/40 px-4 py-2 rounded-lg font-bold text-sm transition">Deletar</button>
-            </form>
-        </div>
+        @if(!$pokemon->seeded) {
+            <div class="flex gap-3">
+                <a href="{{ route('pokemon.edit', $pokemon->id) }}" class="bg-amber-500/20 text-amber-400 hover:bg-amber-500/40 px-4 py-2 rounded-lg font-bold text-sm transition">Editar</a>
+                <form action="{{ route('pokemon.destroy', $pokemon->id) }}" method="POST" onsubmit="return confirm('Tem certeza que deseja remover este Pokémon?')">
+                    @csrf @method('DELETE')
+                    <button type="submit" class="bg-red-500/20 text-red-400 hover:bg-red-500/40 px-4 py-2 rounded-lg font-bold text-sm transition">Deletar</button>
+                </form>
+            </div>
+        }
+        @endif
     </div>
 
     <div class="bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden shadow-2xl flex flex-col md:flex-row">

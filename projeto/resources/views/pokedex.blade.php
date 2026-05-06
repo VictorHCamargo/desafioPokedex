@@ -129,11 +129,6 @@ $statColor = fn($v) => $v >= 150 ? 'bg-blue-500' : ($v >= 110 ? 'bg-green-500' :
                            class="flex-1 text-center py-2 text-xs font-bold rounded-lg bg-blue-600/15 text-blue-400 border border-blue-600/20 hover:bg-blue-600/30 transition">
                             Ver
                         </a>
-                        <!-- <a href="{{ route('pokemon.edit', $pokemon->id) }}"
-                           class="flex-1 text-center py-2 text-xs font-bold rounded-lg bg-amber-500/15 text-amber-400 border border-amber-500/20 hover:bg-amber-500/30 transition">
-                            Editar
-                        </a> -->
-
                     </div>
                 </div>
             </div>
@@ -144,7 +139,7 @@ $statColor = fn($v) => $v >= 150 ? 'bg-blue-500' : ($v >= 110 ? 'bg-green-500' :
 
     <section>
         @if($seededPokemons->isNotEmpty())
-        <div class="flex items-center gap-3 mb-5">
+        <div class="flex items-center gap-3 mb-5">,
             <span class="pixel text-slate-400 text-xs tracking-widest">CADASTRADOS</span>
             <div class="flex-1 h-px bg-slate-800"></div>
         </div>

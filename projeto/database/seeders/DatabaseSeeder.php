@@ -15,52 +15,36 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // TODO : completar as informaçoes com os pokemons existente!
          $pokemons = [
             [
-                'name'      => '',                    
-                'types'     => json_encode(['']),    
+                'name'      => 'Prudence',                    
+                'types'     => json_encode(['psychic','ghost']),    
                 'status'    => json_encode([
-                    'hp'              => 0,           
-                    'attack'          => 0,           
-                    'defense'         => 0,           
-                    'special_attack'  => 0,           
-                    'special_defense' => 0,          
-                    'speed'           => 0,           
+                    "hp"=> "35", "speed"=> "60", "attack"=> "20", "defense"=> "45", "special_attack"=> "65", "special_defense"=> "80" 
                 ]),
-                'image_url' => '',                    
+                'image_url' => 'img/pokemons_fixos/1778009488.png',                    
                 'seeded'    => true,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'name'      => '',
-                'types'     => json_encode(['']),
+                'name'      => 'Caution',
+                'types'     => json_encode(['ghost','dark']),
                 'status'    => json_encode([
-                    'hp'              => 0,
-                    'attack'          => 0,
-                    'defense'         => 0,
-                    'special_attack'  => 0,
-                    'special_defense' => 0,
-                    'speed'           => 0,
+                    "hp"=> "55", "speed"=> "90", "attack"=> "45", "defense"=> "55", "special_attack"=> "95", "special_defense"=> "85"
                 ]),
-                'image_url' => '',
+                'image_url' => 'img/pokemons_fixos/1778009229.png',
                 'seeded'    => true,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'name'      => '',
-                'types'     => json_encode(['']),
+                'name'      => 'Scare',
+                'types'     => json_encode(['ghost','dark']),
                 'status'    => json_encode([
-                    'hp'              => 0,
-                    'attack'          => 0,
-                    'defense'         => 0,
-                    'special_attack'  => 0,
-                    'special_defense' => 0,
-                    'speed'           => 0,
+                    "hp"=> "90", "speed"=> "110", "attack"=> "80", "defense"=> "90", "special_attack"=> "135", "special_defense"=> "95"
                 ]),
-                'image_url' => '',
+                'image_url' => 'img/pokemons_fixos/1778009877.png',
                 'seeded'    => true,
                 'created_at' => now(),
                 'updated_at' => now(),
